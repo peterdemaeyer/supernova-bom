@@ -1,8 +1,13 @@
-# Maven target/ directory, containing e.g. compiled class files.
+# Maven files, such as target directory and flattened POM.
 target/
+.flattened-pom.xml
+
+# IntelliJ files.
+.idea/
+*.iml
 
 # Log files.
 *.log
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml.
+# Virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml.
 hs_err_pid*
