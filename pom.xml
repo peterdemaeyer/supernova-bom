@@ -233,6 +233,7 @@
                         <failIfNoTests>false</failIfNoTests>
                         <excludes>
                             <exclude>**/*IntegrationTest.java</exclude>
+                            <exclude>**/*ContractTest.java</exclude>
                         </excludes>
                         <includes>
                             <include>**/*Test.java</include>
