@@ -1,6 +1,6 @@
 # Supernova
 
-Supernova is a brand that defines the principles and standards of Peter De Maeyer's independent projects.
+Supernova defines a consistent set of principles and standards for projects.
 
 ## Principles
 

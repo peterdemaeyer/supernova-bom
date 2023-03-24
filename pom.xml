@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>su.pernova</groupId>
 	<artifactId>supernova</artifactId>
 	<name>Supernova</name>
 	<description>General structure and BOM of Supernova projects.</description>
+	<url>https://github.com/peterdemaeyer/supernova/</url>
 	<version>${revision}${changelist}</version>
 	<packaging>pom</packaging>
 	<licenses>
@@ -20,13 +19,14 @@
 			<name>Peter De Maeyer</name>
 			<email>peter.de.maeyer@gmail.com</email>
 			<organization>Supernova</organization>
-			<organizationUrl>https://www.pernova.su</organizationUrl>
+			<organizationUrl>https://github.com/peterdemaeyer/</organizationUrl>
 		</developer>
 	</developers>
 	<scm>
 		<connection>scm:git:git://github.com/peterdemaeyer/supernova.git</connection>
 		<developerConnection>scm:git:ssh://github.com:peterdemaeyer/supernova.git</developerConnection>
 		<url>https://github.com/peterdemaeyer/supernova/tree/main/</url>
+		<tag>${version}</tag>
 	</scm>
 	<properties>
 		<revision>1.0.0</revision>
@@ -55,7 +55,7 @@
 		<maven-clean-plugin.version>3.2.0</maven-clean-plugin.version>
 		<maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
 		<maven-deploy-plugin.version>3.1.0</maven-deploy-plugin.version>
-		<maven-failsafe-plugin.version>3.0.0-M9</maven-failsafe-plugin.version>
+		<maven-failsafe-plugin.version>3.0.0</maven-failsafe-plugin.version>
 		<maven-gpg-plugin.version>3.0.1</maven-gpg-plugin.version>
 		<maven-install-plugin.version>3.1.0</maven-install-plugin.version>
 		<maven-jar-plugin.version>3.3.0</maven-jar-plugin.version>
@@ -63,18 +63,15 @@
 		<maven-resources-plugin.version>3.3.0</maven-resources-plugin.version>
 		<maven-shade-plugin.version>3.4.1</maven-shade-plugin.version>
 		<maven-source-plugin.version>3.2.1</maven-source-plugin.version>
-		<maven-surefire-plugin.version>3.0.0-M9</maven-surefire-plugin.version>
+		<maven-surefire-plugin.version>3.0.0</maven-surefire-plugin.version>
 		<maven-toolchains-plugin.version>3.1.0</maven-toolchains-plugin.version>
+		<nexus-staging-maven-plugin.version>1.6.13</nexus-staging-maven-plugin.version>
 	</properties>
 	<distributionManagement>
 		<snapshotRepository>
 			<id>ossrh</id>
 			<url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
 		</snapshotRepository>
-		<repository>
-			<id>ossrh</id>
-			<url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-		</repository>
 	</distributionManagement>
 	<dependencyManagement>
 		<dependencies>
@@ -335,6 +332,20 @@
 						<goals>
 							<goal>jar-no-fork</goal>
 						</goals>
+						<!--
+							Given that we flatten the pom, it is useful to have the source pom.xml in the sources.
+							Especially for projects of packaging type "pom", for which it will be the ONLY file in the sources.
+						-->
+						<configuration>
+							<includePom>true</includePom>
+						</configuration>
+					</execution>
+					<execution>
+						<id>attach-test-sources</id>
+						<goals>
+							<goal>test-jar-no-fork</goal>
+						</goals>
+						<!-- The pom is already in the main sources jar, no need to include it here again. -->
 					</execution>
 				</executions>
 			</plugin>
@@ -360,6 +371,10 @@
 						<goals>
 							<goal>sign</goal>
 						</goals>
+						<configuration>
+							<keyname>${gpg.keyname}</keyname>
+							<passphraseServerId>${gpg.server}</passphraseServerId>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>
@@ -433,6 +448,17 @@
 						</configuration>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.sonatype.plugins</groupId>
+				<artifactId>nexus-staging-maven-plugin</artifactId>
+				<version>${nexus-staging-maven-plugin.version}</version>
+				<extensions>true</extensions>
+				<configuration>
+					<serverId>ossrh</serverId>
+					<nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
+					<autoReleaseAfterClose>false</autoReleaseAfterClose>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
