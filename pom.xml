@@ -2,9 +2,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>su.pernova</groupId>
-	<artifactId>supernova</artifactId>
-	<name>Supernova</name>
-	<description>General structure and BOM of Supernova projects.</description>
+	<artifactId>bom</artifactId>
+	<name>Supernova BOM</name>
+	<description>Bill of materials and definition of standards for Supernova projects.</description>
 	<url>https://github.com/peterdemaeyer/supernova/</url>
 	<version>${revision}${changelist}</version>
 	<packaging>pom</packaging>
