@@ -5,13 +5,13 @@
 	<artifactId>bom</artifactId>
 	<name>Supernova BOM</name>
 	<description>Bill of materials and definition of standards for Supernova projects.</description>
-	<url>https://github.com/peterdemaeyer/supernova/</url>
+	<url>https://github.com/peterdemaeyer/supernova-bom/</url>
 	<version>${revision}${changelist}</version>
 	<packaging>pom</packaging>
 	<licenses>
 		<license>
 			<name>MIT License</name>
-			<url>https://raw.githubusercontent.com/peterdemaeyer/supernova/main/LICENSE.txt</url>
+			<url>https://raw.githubusercontent.com/peterdemaeyer/supernova-bom/main/LICENSE.txt</url>
 		</license>
 	</licenses>
 	<developers>
@@ -23,13 +23,13 @@
 		</developer>
 	</developers>
 	<scm>
-		<connection>scm:git:git://github.com/peterdemaeyer/supernova.git</connection>
-		<developerConnection>scm:git:ssh://github.com:peterdemaeyer/supernova.git</developerConnection>
-		<url>https://github.com/peterdemaeyer/supernova/tree/main/</url>
+		<connection>scm:git:git://github.com/peterdemaeyer/supernova-bom.git</connection>
+		<developerConnection>scm:git:ssh://github.com:peterdemaeyer/supernova-bom.git</developerConnection>
+		<url>https://github.com/peterdemaeyer/supernova-bom/tree/main/</url>
 		<tag>${version}</tag>
 	</scm>
 	<properties>
-		<revision>1.0.0</revision>
+		<revision>1.0.1</revision>
 		<changelist>-SNAPSHOT</changelist>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
