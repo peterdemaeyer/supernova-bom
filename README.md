@@ -2,6 +2,28 @@
 
 Supernova defines a consistent set of principles and standards for projects.
 
+# Features
+
+|Release versions must only depend on release versions. Release versions must thus not depend on any snapshot|
+|100% code coverage by default.|
+|Dependency management has dependencies of preferred third-party dependencies only.
+Individual project may have additional (test) dependencies.|
+
+# Changes
+
+## 1.1.0
+
+* Use `maven-enforcer-plugin` to make sure release versions only depend on release versions.
+Snapshots may depend on snapshots.
+
+## 1.0.0
+
+Definition of Supernova standards:
+
+* Common dependencies and versions in `dependencyManagement` section.
+* Code coverage must be 100%.
+* Flatten poms.
+
 ## Principles
 
 Ultimately agile.
