@@ -31,8 +31,7 @@
 	<properties>
 		<revision>2.0.0</revision>
 		<changelist>-SNAPSHOT</changelist>
-		<maven.compiler.source>11</maven.compiler.source>
-		<maven.compiler.target>11</maven.compiler.target>
+		<maven.compiler.release>11</maven.compiler.release>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<jacoco.coverage.minimum>1.0</jacoco.coverage.minimum>
 		<!-- Dependency versions (alphabetically). -->
