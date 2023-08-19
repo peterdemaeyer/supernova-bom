@@ -26,7 +26,7 @@
 		<connection>scm:git:git://github.com/peterdemaeyer/supernova-bom.git</connection>
 		<developerConnection>scm:git:ssh://github.com:peterdemaeyer/supernova-bom.git</developerConnection>
 		<url>https://github.com/peterdemaeyer/supernova-bom/tree/main/</url>
-		<tag>${version}</tag>
+		<tag>${project.version}</tag>
 	</scm>
 	<properties>
 		<revision>2.0.0</revision>
@@ -276,11 +276,6 @@
 							<include>**/*IntegrationTest.java</include>
 						</includes>
 					</configuration>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-failsafe-plugin</artifactId>
-					<version>${maven-failsafe-plugin.version}</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
