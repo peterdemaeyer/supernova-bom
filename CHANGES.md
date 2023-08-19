@@ -3,6 +3,7 @@
 ## 2.0.0
 
 * Bumped binary compatibility from Java 1.8 to Java 11.
+* Bumped versions of various dependencies.
 
 ## 1.1.1
 
