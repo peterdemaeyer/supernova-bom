@@ -685,6 +685,14 @@
 				</executions>
 			</plugin>
 			<plugin>
+				<artifactId>maven-install-plugin</artifactId>
+				<configuration>
+					<!-- Always install at the end of a multi-module build. -->
+					<!-- This gives the aggregate project a chance to fail the build before installation, for example because coverage checks have not been met. -->
+					<installAtEnd>true</installAtEnd>
+				</configuration>
+			</plugin>
+			<plugin>
 				<artifactId>maven-deploy-plugin</artifactId>
 				<configuration>
 					<!-- Always deploy at the end of a multi-module build. -->
