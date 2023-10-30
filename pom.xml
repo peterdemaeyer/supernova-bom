@@ -33,7 +33,8 @@
 		<changelist>-SNAPSHOT</changelist>
 		<maven.compiler.release>11</maven.compiler.release>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<jacoco.coverage.minimum>1.0</jacoco.coverage.minimum>
+		<!-- Use two decimal places in reporting. -->
+		<jacoco.coverage.minimum>1.00</jacoco.coverage.minimum>
 		<!-- Dependency versions (alphabetically). -->
 		<checkstyle.version>10.12.2</checkstyle.version>
 		<commons-collections4.version>4.4</commons-collections4.version>
@@ -43,25 +44,25 @@
 		<jackson.version>2.15.2</jackson.version>
 		<junit-jupiter.version>5.10.0</junit-jupiter.version>
 		<junit-platform.version>1.10.0</junit-platform.version>
-		<log4j.version>2.20.0</log4j.version>
-		<mockito.version>5.4.0</mockito.version>
+		<log4j.version>2.21.0</log4j.version>
+		<mockito.version>5.6.0</mockito.version>
 		<!-- Maven plugin versions (alphabetically). -->
 		<build-helper-maven-plugin.version>3.4.0</build-helper-maven-plugin.version>
 		<flatten-maven-plugin.version>1.5.0</flatten-maven-plugin.version>
-		<jacoco-maven-plugin.version>0.8.10</jacoco-maven-plugin.version>
+		<jacoco-maven-plugin.version>0.8.11</jacoco-maven-plugin.version>
 		<maven-antrun-plugin.version>3.1.0</maven-antrun-plugin.version>
-		<maven-clean-plugin.version>3.2.0</maven-clean-plugin.version>
+		<maven-clean-plugin.version>3.3.1</maven-clean-plugin.version>
 		<maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
-		<maven-deploy-plugin.version>3.1.0</maven-deploy-plugin.version>
+		<maven-deploy-plugin.version>3.1.1</maven-deploy-plugin.version>
 		<maven-failsafe-plugin.version>3.1.2</maven-failsafe-plugin.version>
 		<maven-gpg-plugin.version>3.1.0</maven-gpg-plugin.version>
 		<maven-enforcer-plugin.version>3.3.0</maven-enforcer-plugin.version>
 		<maven-install-plugin.version>3.1.1</maven-install-plugin.version>
 		<maven-jar-plugin.version>3.3.0</maven-jar-plugin.version>
 		<maven-javadoc-plugin.version>3.5.0</maven-javadoc-plugin.version>
-		<maven-resources-plugin.version>3.3.0</maven-resources-plugin.version>
-		<maven-shade-plugin.version>3.4.1</maven-shade-plugin.version>
-		<maven-source-plugin.version>3.2.1</maven-source-plugin.version>
+		<maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
+		<maven-shade-plugin.version>3.5.1</maven-shade-plugin.version>
+		<maven-source-plugin.version>3.3.0</maven-source-plugin.version>
 		<maven-surefire-plugin.version>3.1.2</maven-surefire-plugin.version>
 		<maven-toolchains-plugin.version>3.1.0</maven-toolchains-plugin.version>
 		<nexus-staging-maven-plugin.version>1.6.13</nexus-staging-maven-plugin.version>
@@ -77,6 +78,7 @@
 		</repository>
 	</distributionManagement>
 	<dependencyManagement>
+		<!-- Alphabetically, by group ID then by artifact ID. -->
 		<dependencies>
 			<dependency>
 				<groupId>com.fasterxml.jackson.core</groupId>
@@ -84,9 +86,51 @@
 				<version>${jackson.version}</version>
 			</dependency>
 			<dependency>
+				<groupId>org.apache.logging.log4j</groupId>
+				<artifactId>log4j-api</artifactId>
+				<version>${log4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.logging.log4j</groupId>
+				<artifactId>log4j-core</artifactId>
+				<version>${log4j.version}</version>
+			</dependency>
+			<!-- Compatibility with SLF4J. -->
+			<dependency>
+				<groupId>org.apache.logging.log4j</groupId>
+				<artifactId>log4j-slf4j-impl</artifactId>
+				<version>${log4j.version}</version>
+				<scope>runtime</scope>
+			</dependency>
+			<!-- Compatibility with Log4j 1.2. -->
+			<dependency>
+				<groupId>org.apache.logging.log4j</groupId>
+				<artifactId>log4j-1.2-api</artifactId>
+				<version>${log4j.version}</version>
+				<scope>runtime</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.junit.jupiter</groupId>
+				<artifactId>junit-jupiter</artifactId>
+				<version>${junit-jupiter.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.mockito</groupId>
+				<artifactId>mockito-core</artifactId>
+				<version>${mockito.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.mockito</groupId>
+				<artifactId>mockito-junit-jupiter</artifactId>
+				<version>${mockito.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
 				<groupId>org.apache.commons</groupId>
-				<artifactId>commons-text</artifactId>
-				<version>${commons-text.version}</version>
+				<artifactId>commons-collections4</artifactId>
+				<version>${commons-collections4.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.commons</groupId>
@@ -95,8 +139,8 @@
 			</dependency>
 			<dependency>
 				<groupId>org.apache.commons</groupId>
-				<artifactId>commons-collections4</artifactId>
-				<version>${commons-collections4.version}</version>
+				<artifactId>commons-text</artifactId>
+				<version>${commons-text.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>commons-io</groupId>
@@ -154,90 +198,38 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-	<dependencies>
-		<dependency>
-			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter</artifactId>
-			<version>${junit-jupiter.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.mockito</groupId>
-			<artifactId>mockito-core</artifactId>
-			<version>${mockito.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.mockito</groupId>
-			<artifactId>mockito-junit-jupiter</artifactId>
-			<version>${mockito.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-api</artifactId>
-			<version>${log4j.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-core</artifactId>
-			<version>${log4j.version}</version>
-		</dependency>
-		<!-- Compatibility with SLF4J. -->
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-slf4j-impl</artifactId>
-			<version>${log4j.version}</version>
-			<scope>runtime</scope>
-		</dependency>
-		<!-- Compatibility with Log4j 1.2. -->
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-1.2-api</artifactId>
-			<version>${log4j.version}</version>
-			<scope>runtime</scope>
-		</dependency>
-	</dependencies>
 	<build>
 		<pluginManagement>
 			<plugins>
 				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-clean-plugin</artifactId>
 					<version>${maven-clean-plugin.version}</version>
 				</plugin>
 				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
 					<version>${maven-compiler-plugin.version}</version>
 				</plugin>
 				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-resources-plugin</artifactId>
 					<version>${maven-resources-plugin.version}</version>
 				</plugin>
 				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-jar-plugin</artifactId>
 					<version>${maven-jar-plugin.version}</version>
 				</plugin>
 				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-antrun-plugin</artifactId>
 					<version>${maven-antrun-plugin.version}</version>
 				</plugin>
 				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-toolchains-plugin</artifactId>
 					<version>${maven-toolchains-plugin.version}</version>
 				</plugin>
 				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-install-plugin</artifactId>
 					<version>${maven-install-plugin.version}</version>
 				</plugin>
 				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-deploy-plugin</artifactId>
 					<version>${maven-deploy-plugin.version}</version>
 				</plugin>
@@ -252,7 +244,6 @@
 					<version>${build-helper-maven-plugin.version}</version>
 				</plugin>
 				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
 					<version>${maven-surefire-plugin.version}</version>
 					<configuration>
@@ -267,7 +258,6 @@
 					</configuration>
 				</plugin>
 				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-failsafe-plugin</artifactId>
 					<version>${maven-failsafe-plugin.version}</version>
 					<configuration>
@@ -278,7 +268,6 @@
 					</configuration>
 				</plugin>
 				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-shade-plugin</artifactId>
 					<version>${maven-shade-plugin.version}</version>
 				</plugin>
@@ -287,9 +276,105 @@
 					<artifactId>jacoco-maven-plugin</artifactId>
 					<version>${jacoco-maven-plugin.version}</version>
 				</plugin>
+				<plugin>
+					<artifactId>maven-javadoc-plugin</artifactId>
+					<version>${maven-javadoc-plugin.version}</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-source-plugin</artifactId>
+					<version>${maven-source-plugin.version}</version>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>define-supernova-properties</id>
+						<goals>
+							<goal>bsh-property</goal>
+						</goals>
+						<configuration>
+							<properties>
+								<property>supernova.multiModule.parent</property>
+								<property>supernova.multiModule.child</property>
+								<property>supernova.multiModule.aggregate</property>
+								<property>supernova.multiModule.parentDir</property>
+								<property>supernova.multiModule.aggregateDir</property>
+								<property>supernova.jacoco.skipCopyResources</property>
+								<property>supernova.jacoco.skipMerge</property>
+								<property>supernova.jacoco.skipReport</property>
+								<property>supernova.jacoco.skipCheck</property>
+								<property>supernova.jacoco.reportTitle</property>
+							</properties>
+							<source>
+								import java.io.File;
+								import java.util.function.Supplier;
+
+								boolean getOrDefault(Properties properties, String name, Supplier supplier) {
+									String value = properties.getProperty(name);
+									if (value == null) {
+										return (Boolean) supplier.get();
+									}
+									return Boolean.parseBoolean(value);
+								}
+
+								properties = project.getProperties();
+								supernova.multiModule.parent = project.getArtifactId().endsWith("-parent");
+								parent = project.getParent();
+								supernova.multiModule.child = (parent != null) &amp;&amp; parent.getArtifactId().endsWith("-parent");
+								supernova.multiModule.aggregate = supernova.multiModule.child &amp;&amp; project.getArtifactId().endsWith("-aggregate");
+								supernova.multiModule.parentDir = (parent != null) ? parent.getBasedir() : null;
+								supernova.multiModule.aggregateDir = (parent != null) ? new File(supernova.multiModule.parentDir, parent.getArtifactId().replace("-parent", "-aggregate")) : null;
+								// Unfortunately, BeanShell does not support lambdas, so we have to spell out an anonymous inner class.
+								notNonAggregateChildSupplier = new Supplier() {
+
+									Boolean get() {
+										return !supernova.multiModule.child || supernova.multiModule.aggregate;
+									}
+								};
+								// Unfortunately, BeanShell does not support inline anonymous inner classes, so we have to define a variable for them.
+								supernova.jacoco.skipCopyResources = getOrDefault(properties, "supernova.jacoco.skipCopyResources", notNonAggregateChildSupplier);
+								// Merging serves two purposes:
+								// 1. In a regular module, merges UT an IT execution data files.
+								// 2. In an aggregate module, merges execution data files from all modules within reactor.
+								falseSupplier = new Supplier() {
+
+									Boolean get() {
+										return false;
+									}
+								};
+								supernova.jacoco.skipMerge = getOrDefault(properties, "supernova.jacoco.skipMerge", falseSupplier);
+								nonAggregateChildSupplier = new Supplier() {
+
+									Boolean get() {
+										return supernova.multiModule.child &amp;&amp; !supernova.multiModule.aggregate;
+									}
+								};
+								supernova.jacoco.skipReport = getOrDefault(properties, "supernova.jacoco.skipReport", nonAggregateChildSupplier);
+								supernova.jacoco.reportTitle = properties.getProperty("supernova.jacoco.reportTitle");
+								if (supernova.jacoco.reportTitle == null) {
+									String artifactId = project.getArtifactId();
+									// For multi-modules, strip the "-aggregate" from the artifact ID for the JaCoCo report title.
+									supernova.jacoco.reportTitle = supernova.multiModule.aggregate ? artifactId.substring(0, artifactId.length() - 10) : artifactId;
+								}
+								supernova.jacoco.skipCheck = getOrDefault(properties, "supernova.jacoco.skipCheck", nonAggregateChildSupplier);
+
+								import java.util.Map.Entry;
+
+								for (Entry entry : new TreeMap(project.getProperties()).entrySet()) {
+									String key = entry.getKey().toString();
+									if (key.startsWith("supernova.")) {
+										log.info(key + " = " + entry.getValue());
+									}
+								}
+							</source>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<artifactId>maven-jar-plugin</artifactId>
 				<executions>
@@ -316,8 +401,27 @@
 				</executions>
 			</plugin>
 			<plugin>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>integration-test</id>
+						<goals>
+							<goal>integration-test</goal>
+						</goals>
+						<configuration>
+							<enableAssertions>false</enableAssertions>
+						</configuration>
+					</execution>
+					<execution>
+						<id>integration-verify</id>
+						<goals>
+							<goal>verify</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
 				<artifactId>maven-source-plugin</artifactId>
-				<version>${maven-source-plugin.version}</version>
 				<executions>
 					<execution>
 						<id>attach-sources</id>
@@ -343,7 +447,6 @@
 			</plugin>
 			<plugin>
 				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>${maven-javadoc-plugin.version}</version>
 				<executions>
 					<execution>
 						<id>attach-javadoc</id>
@@ -403,6 +506,21 @@
 					</execution>
 				</executions>
 			</plugin>
+			<!--
+			The JaCoCo configuration supports single-module and multi-module projects, combining coverage of unit and
+			integration tests.
+			All Supernova projects must achieve 100% code coverage, hence the default ${jacoco.coverage.minimum} = 1.00.
+			Within a single module, code coverage of unit and integration tests is aggregated by using the same
+			destination file as set by ${jacoco.destFile}.
+			In multi-module projects, 100% code coverage may not be achieved in each of the individual modules,
+			but may be achieved by aggregating the code coverage of all the modules:
+			- my-project (main module, tests in this module alone do not reach 100% code coverage, lower the
+			${jacoco.coverage.minimum} or skip the check in those modules)
+			- [optional] my-project-extras (additional module)
+			- my-project-tests (additional module with tests, reaching 100% code coverage)
+			- my-project-aggregate (aggregate module combining the JaCoCo report for all other modules to achieve 100%
+			 code coverage)
+			-->
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
@@ -412,28 +530,104 @@
 						<goals>
 							<goal>prepare-agent</goal>
 						</goals>
+						<configuration>
+							<skip>${skipTests}</skip>
+							<destFile>${project.build.directory}/${project.artifactId}-ut.exec</destFile>
+						</configuration>
 					</execution>
 					<execution>
+						<id>jacoco-prepare-agent-integration</id>
+						<goals>
+							<goal>prepare-agent-integration</goal>
+						</goals>
+						<configuration>
+							<skip>${skipITs}</skip>
+							<destFile>${project.build.directory}/${project.artifactId}-it.exec</destFile>
+						</configuration>
+					</execution>
+					<execution>
+						<id>jacoco-merge</id>
+						<!-- It must come AFTER integration tests, but BEFORE the "check" goal, so we bind it to the same phase as the "check" goal but higher up in the POM so that it comes first. -->
+						<phase>verify</phase>
+						<goals>
+							<goal>merge</goal>
+						</goals>
+						<configuration>
+							<fileSets>
+								<fileSet>
+									<directory>${project.build.directory}</directory>
+									<includes>
+										<include>*.exec</include>
+									</includes>
+								</fileSet>
+							</fileSets>
+							<skip>${supernova.jacoco.skipMerge}</skip>
+							<destFile>${project.build.directory}/${project.artifactId}.exec</destFile>
+						</configuration>
+					</execution>
+					<!-- Use a single "report" goal to report on a single exec file which is the combined coverage of unit and integration tests. -->
+					<execution>
 						<id>jacoco-report</id>
-						<phase>prepare-package</phase>
 						<goals>
 							<goal>report</goal>
 						</goals>
+						<configuration>
+							<skip>${supernova.jacoco.skipReport}</skip>
+							<dataFile>${project.build.directory}/${project.artifactId}.exec</dataFile>
+							<formats>HTML</formats>
+							<title>${supernova.jacoco.reportTitle}</title>
+						</configuration>
 					</execution>
+<!--					&lt;!&ndash; Use a "report-aggregate" goal for multi-module aggregator projects. &ndash;&gt;-->
+<!--					<execution>-->
+<!--						<id>jacoco-report-aggregate</id>-->
+<!--						<phase>verify</phase>-->
+<!--						<goals>-->
+<!--							<goal>report-aggregate</goal>-->
+<!--						</goals>-->
+<!--						<configuration>-->
+<!--							<skip>${supernova.jacoco.skipReportAggregate}</skip>-->
+<!--							<formats>HTML</formats>-->
+<!--						</configuration>-->
+<!--					</execution>-->
+<!--					&lt;!&ndash; Across multiple modules of a multi-module project, merges *.exec into *-aggregate.exec. &ndash;&gt;-->
+<!--					<execution>-->
+<!--						<id>jacoco-merge</id>-->
+<!--						<goals>-->
+<!--							<goal>merge</goal>-->
+<!--						</goals>-->
+<!--						<configuration>-->
+<!--							<skip>${supernova.jacoco.skipMerge}</skip>-->
+<!--							<fileSets>-->
+<!--								<fileSet>-->
+<!--									<directory>${supernova.jacoco.destDir}</directory>-->
+<!--									<includes>-->
+<!--										<include>*.exec</include>-->
+<!--									</includes>-->
+<!--								</fileSet>-->
+<!--							</fileSets>-->
+<!--						</configuration>-->
+<!--					</execution>-->
+					<!-- No need to have a separate report-integration goal, since both unit and integration test coverage has been appended to the same file and thus covered by the report goal. -->
 					<execution>
 						<id>jacoco-check</id>
 						<goals>
 							<goal>check</goal>
 						</goals>
 						<configuration>
+							<skip>${supernova.jacoco.skipCheck}</skip>
+							<dataFile>${project.build.directory}/${project.artifactId}.exec</dataFile>
 							<rules>
 								<rule>
-									<!-- Possibilities are BUNDLE, PACKAGE, CLASS. -->
 									<element>BUNDLE</element>
 									<limits>
 										<limit>
-											<!-- Possibilities are INSTRUCTION, LINE, BRANCH. -->
 											<counter>INSTRUCTION</counter>
+											<value>COVEREDRATIO</value>
+											<minimum>${jacoco.coverage.minimum}</minimum>
+										</limit>
+										<limit>
+											<counter>BRANCH</counter>
 											<value>COVEREDRATIO</value>
 											<minimum>${jacoco.coverage.minimum}</minimum>
 										</limit>
@@ -443,6 +637,60 @@
 						</configuration>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-sources-to-aggregate</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<skip>${supernova.jacoco.skipCopyResources}</skip>
+							<outputDirectory>${supernova.multiModule.aggregateDir}/src/main/java</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${project.build.sourceDirectory}</directory>
+									<includes>
+										<include>**/*.java</include>
+									</includes>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+					<execution>
+						<id>copy-resources-to-aggregate</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<skip>${supernova.jacoco.skipCopyResources}</skip>
+							<outputDirectory>${supernova.multiModule.aggregateDir}/target</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${project.build.directory}</directory>
+									<includes>
+										<!-- Copy production classes to aggregate. -->
+										<!-- Skip test classes because they don't need coverage. -->
+										<include>classes/**/*.class</include>
+										<include>${project.artifactId}.exec</include>
+									</includes>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<configuration>
+					<!-- Always deploy at the end of a multi-module build. -->
+					<!-- This gives the aggregate project a chance to fail the build before deployment, for example because coverage checks have not been met. -->
+					<deployAtEnd>true</deployAtEnd>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.sonatype.plugins</groupId>
@@ -458,7 +706,7 @@
 						Without it, deployment happens at the end, in the last module, and if the last module skips
 						deployment, nothing is deployed at all.
 					-->
-					<skipLocalStaging>true</skipLocalStaging>
+<!--					<skipLocalStaging>true</skipLocalStaging>-->
 				</configuration>
 			</plugin>
 			<plugin>
@@ -484,4 +732,24 @@
 			</plugin>
 		</plugins>
 	</build>
+<!--	<reporting>-->
+		<!--
+			Usage of plugin together with maven-site-plugin without explicit selection of reports might lead to generation of redundant aggregate reports.
+			Specify reportSets explicitly to avoid this.
+		-->
+<!--		<plugins>-->
+<!--			<plugin>-->
+<!--				<groupId>org.jacoco</groupId>-->
+<!--				<artifactId>jacoco-maven-plugin</artifactId>-->
+<!--				<reportSets>-->
+<!--					<reportSet>-->
+<!--						<reports>-->
+<!--							&lt;!&ndash; Select non-aggregate reports. &ndash;&gt;-->
+<!--							<report>report</report>-->
+<!--						</reports>-->
+<!--					</reportSet>-->
+<!--				</reportSets>-->
+<!--			</plugin>-->
+<!--		</plugins>-->
+<!--	</reporting>-->
 </project>
