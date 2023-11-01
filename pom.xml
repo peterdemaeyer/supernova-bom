@@ -53,7 +53,6 @@
 		<maven-antrun-plugin.version>3.1.0</maven-antrun-plugin.version>
 		<maven-clean-plugin.version>3.3.1</maven-clean-plugin.version>
 		<maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
-		<maven-deploy-plugin.version>3.1.1</maven-deploy-plugin.version>
 		<maven-failsafe-plugin.version>3.1.2</maven-failsafe-plugin.version>
 		<maven-gpg-plugin.version>3.1.0</maven-gpg-plugin.version>
 		<maven-enforcer-plugin.version>3.3.0</maven-enforcer-plugin.version>
@@ -228,10 +227,6 @@
 				<plugin>
 					<artifactId>maven-install-plugin</artifactId>
 					<version>${maven-install-plugin.version}</version>
-				</plugin>
-				<plugin>
-					<artifactId>maven-deploy-plugin</artifactId>
-					<version>${maven-deploy-plugin.version}</version>
 				</plugin>
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
@@ -692,14 +687,7 @@
 					<installAtEnd>true</installAtEnd>
 				</configuration>
 			</plugin>
-			<plugin>
-				<artifactId>maven-deploy-plugin</artifactId>
-				<configuration>
-					<!-- Always deploy at the end of a multi-module build. -->
-					<!-- This gives the aggregate project a chance to fail the build before deployment, for example because coverage checks have not been met. -->
-					<deployAtEnd>true</deployAtEnd>
-				</configuration>
-			</plugin>
+			<!-- The nexus-staging-maven-plugin replaces the maven-deploy-plugin. -->
 			<plugin>
 				<groupId>org.sonatype.plugins</groupId>
 				<artifactId>nexus-staging-maven-plugin</artifactId>
