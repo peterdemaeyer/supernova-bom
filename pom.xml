@@ -47,7 +47,7 @@
 		<log4j.version>2.21.1</log4j.version>
 		<mockito.version>5.6.0</mockito.version>
 		<!-- Maven plugin versions (alphabetically). -->
-		<build-helper-maven-plugin.version>3.4.0</build-helper-maven-plugin.version>
+		<build-helper-maven-plugin.version>3.5.0</build-helper-maven-plugin.version>
 		<flatten-maven-plugin.version>1.5.0</flatten-maven-plugin.version>
 		<jacoco-maven-plugin.version>0.8.11</jacoco-maven-plugin.version>
 		<maven-antrun-plugin.version>3.1.0</maven-antrun-plugin.version>
@@ -209,6 +209,10 @@
 					<version>${maven-compiler-plugin.version}</version>
 				</plugin>
 				<plugin>
+					<artifactId>maven-gpg-plugin</artifactId>
+					<version>${maven-gpg-plugin.version}</version>
+				</plugin>
+				<plugin>
 					<artifactId>maven-resources-plugin</artifactId>
 					<version>${maven-resources-plugin.version}</version>
 				</plugin>
@@ -287,7 +291,7 @@
 				<artifactId>build-helper-maven-plugin</artifactId>
 				<executions>
 					<execution>
-						<id>define-supernova-properties</id>
+						<id>define-supernova-properties-validate</id>
 						<goals>
 							<goal>bsh-property</goal>
 						</goals>
@@ -356,7 +360,78 @@
 									supernova.jacoco.reportTitle = supernova.multiModule.aggregate ? artifactId.substring(0, artifactId.length() - 10) : artifactId;
 								}
 								supernova.jacoco.skipCheck = getOrDefault(properties, "supernova.jacoco.skipCheck", nonAggregateChildSupplier);
+							</source>
+						</configuration>
+					</execution>
+					<execution>
+						<id>list-supernova-properties-validate</id>
+						<goals>
+							<goal>bsh-property</goal>
+						</goals>
+						<configuration>
+							<source>
+								import java.util.Map.Entry;
 
+								for (Entry entry : new TreeMap(project.getProperties()).entrySet()) {
+									String key = entry.getKey().toString();
+									if (key.startsWith("supernova.")) {
+										log.info(key + " = " + entry.getValue());
+									}
+								}
+							</source>
+						</configuration>
+					</execution>
+					<execution>
+						<id>define-supernova-properties-pre-clean</id>
+						<!-- Ideally, we need one "bsh-property" goal for all purposes, and we need it early in the lifecycle. -->
+						<!-- For the default lifecycle, this is the default "validate" phase. -->
+						<!-- For the "clean" lifecycle, this is the "pre-clean" phase (because it doesn't have a "validate" phase). -->
+						<!-- Unfortunately, this means we cannot define a single execution bound to a common phase. -->
+						<!-- We have to define multiple executions bound to different phases, with some inevitable code duplication. -->
+						<!-- Pity, but we accept the cost and move on. -->
+						<phase>pre-clean</phase>
+						<goals>
+							<goal>bsh-property</goal>
+						</goals>
+						<configuration>
+							<properties>
+								<property>supernova.jacoco.skipDeleteSources</property>
+							</properties>
+							<source>
+								import java.io.File;
+								import java.util.function.Supplier;
+
+								boolean getOrDefault(Properties properties, String name, Supplier supplier) {
+									String value = properties.getProperty(name);
+									if (value == null) {
+										return (Boolean) supplier.get();
+									}
+									return Boolean.parseBoolean(value);
+								}
+
+								properties = project.getProperties();
+								parent = project.getParent();
+								supernova.multiModule.child = (parent != null) &amp;&amp; parent.getArtifactId().endsWith("-parent");
+								supernova.multiModule.aggregate = supernova.multiModule.child &amp;&amp; project.getArtifactId().endsWith("-aggregate");
+								// Unfortunately, BeanShell does not support lambdas, so we have to spell out an anonymous inner class.
+								aggregateChildSupplier = new Supplier() {
+
+									Boolean get() {
+										return !supernova.multiModule.child || !supernova.multiModule.aggregate;
+									}
+								};
+								supernova.jacoco.skipDeleteSources = getOrDefault(properties, "supernova.jacoco.skipDeleteSources", aggregateChildSupplier);
+							</source>
+						</configuration>
+					</execution>
+					<execution>
+						<id>list-supernova-properties-pre-clean</id>
+						<phase>pre-clean</phase>
+						<goals>
+							<goal>bsh-property</goal>
+						</goals>
+						<configuration>
+							<source>
 								import java.util.Map.Entry;
 
 								for (Entry entry : new TreeMap(project.getProperties()).entrySet()) {
@@ -456,7 +531,6 @@
 			</plugin>
 			<plugin>
 				<artifactId>maven-gpg-plugin</artifactId>
-				<version>${maven-gpg-plugin.version}</version>
 				<executions>
 					<execution>
 						<id>sign-artifacts</id>
@@ -686,6 +760,26 @@
 					<!-- This gives the aggregate project a chance to fail the build before installation, for example because coverage checks have not been met. -->
 					<installAtEnd>true</installAtEnd>
 				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-clean-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>delete-sources-from-aggregate</id>
+						<phase>clean</phase>
+						<goals>
+							<goal>clean</goal>
+						</goals>
+						<configuration>
+							<skip>${supernova.jacoco.skipDeleteSources}</skip>
+							<filesets>
+								<fileset>
+									<directory>${project.build.sourceDirectory}</directory>
+								</fileset>
+							</filesets>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 			<!-- The nexus-staging-maven-plugin replaces the maven-deploy-plugin. -->
 			<plugin>
